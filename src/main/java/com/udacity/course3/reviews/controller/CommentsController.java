@@ -7,6 +7,9 @@ import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 
+import com.udacity.course3.reviews.repository.CommentRepository;
+import com.udacity.course3.reviews.repository.ReviewRepository;
+
 /**
  * Spring REST controller for working with comment entity.
  */
@@ -14,7 +17,14 @@ import java.util.List;
 @RequestMapping("/comments")
 public class CommentsController {
 
-    // TODO: Wire needed JPA repositories here
+    // DONE: Wire needed JPA repositories here
+    private final ReviewRepository reviewRepository;
+    private final CommentRepository commentRepository;
+
+    public CommentsController(ReviewRepository reviewRepository, CommentRepository commentRepository) {
+        this.reviewRepository = reviewRepository;
+        this.commentRepository = commentRepository;
+    }
 
     /**
      * Creates a comment for a review.

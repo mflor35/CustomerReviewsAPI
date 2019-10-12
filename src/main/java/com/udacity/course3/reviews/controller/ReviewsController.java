@@ -7,14 +7,23 @@ import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 
+import com.udacity.course3.reviews.repository.ProductRepository;
+import com.udacity.course3.reviews.repository.ReviewRepository;
+
 /**
  * Spring REST controller for working with review entity.
  */
 @RestController
 public class ReviewsController {
 
-    // TODO: Wire JPA repositories here
+    // DONE: Wire JPA repositories here
+    private final ReviewRepository reviewRepository;
+    private final ProductRepository productRepository;
 
+    ReviewsController(ReviewRepository reviewRepository, ProductRepository productRepository) {
+        this.productRepository = productRepository;
+        this.reviewRepository = reviewRepository;
+    }
     /**
      * Creates a review for a product.
      * <p>

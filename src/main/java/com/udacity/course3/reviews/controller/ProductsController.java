@@ -7,6 +7,8 @@ import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 
+import com.udacity.course3.reviews.repository.ProductRepository;
+
 /**
  * Spring REST controller for working with product entity.
  */
@@ -14,7 +16,12 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductsController {
 
-    // TODO: Wire JPA repositories here
+    // DONE: Wire JPA repositories here
+    private final ProductRepository productRepository;
+    
+    ProductsController(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     /**
      * Creates a product.
