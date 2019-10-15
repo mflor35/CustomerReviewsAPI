@@ -1,12 +1,14 @@
 package com.udacity.course3.reviews.controller;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.udacity.course3.reviews.entity.Comment;
+import com.udacity.course3.reviews.entity.Review;
 import com.udacity.course3.reviews.repository.CommentRepository;
 import com.udacity.course3.reviews.repository.ReviewRepository;
 
@@ -36,9 +38,15 @@ public class CommentsController {
      *
      * @param reviewId The id of the review.
      */
-    @RequestMapping(value = "/reviews/{reviewId}", method = RequestMethod.POST)
-    public ResponseEntity<?> createCommentForReview(@PathVariable("reviewId") Integer reviewId) {
-        throw new HttpServerErrorException(HttpStatus.NOT_IMPLEMENTED);
+    @RequestMapping(value = "/reviews/{reviewId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Comment> createCommentForReview(@PathVariable("reviewId") Integer reviewId, @RequestBody Comment comment) {
+        Optional<Review> oReview = reviewRepository.findById(reviewId);
+        if(!oReview.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        comment.setReview(oReview.get());
+        return ResponseEntity.ok(commentRepository.save(comment));
     }
 
     /**
@@ -50,8 +58,8 @@ public class CommentsController {
      *
      * @param reviewId The id of the review.
      */
-    @RequestMapping(value = "/reviews/{reviewId}", method = RequestMethod.GET)
-    public List<?> listCommentsForReview(@PathVariable("reviewId") Integer reviewId) {
-        throw new HttpServerErrorException(HttpStatus.NOT_IMPLEMENTED);
+    @RequestMapping(value = "/reviews/{reviewId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Comment>> listCommentsForReview(@PathVariable("reviewId") Integer reviewId) {
+        return ResponseEntity.ok(commentRepository.findAllByReview(new Review(reviewId)));
     }
 }
