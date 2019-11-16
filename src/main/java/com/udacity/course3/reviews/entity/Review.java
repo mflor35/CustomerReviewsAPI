@@ -29,8 +29,10 @@ public class Review {
 
         public Review() { }
 
-        public Review( Integer id) {
+        public Review( String title, String body, Integer id) {
             this.id = id;
+            this.body = body;
+            this.title = title;
         }
 
         /**

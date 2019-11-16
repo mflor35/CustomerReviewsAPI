@@ -27,6 +27,13 @@ public class Comment {
     @NotEmpty(message = "Please provide a comment's body")
     private String body;
 
+    public Comment() { }
+
+    public Comment(String title, String body, Integer id) {
+        this.title = title;
+        this.body = body;
+        this.id = id;
+    }
     /**
      * @param body the body to set
      */

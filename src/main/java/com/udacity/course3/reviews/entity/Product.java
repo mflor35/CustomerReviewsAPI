@@ -25,9 +25,11 @@ public class Product {
     private String description;
 
     public Product() { }
-    
-    public Product(Integer id) {
+
+    public Product(String name, String description, Integer id) {
         this.id = id;
+        this.name = name;
+        this.description = description;
     }
     /**
      * @return the id
