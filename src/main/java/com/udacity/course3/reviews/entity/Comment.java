@@ -1,10 +1,12 @@
 package com.udacity.course3.reviews.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
 
 /**
  * Comment
@@ -18,7 +20,11 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String heading;
+    @Column(name = "title")
+    @NotEmpty(message = "Please provide a comment's title")
+    private String title;
+    @Column(name = "body")
+    @NotEmpty(message = "Please provide a comment's body")
     private String body;
 
     /**
@@ -26,6 +32,14 @@ public class Comment {
      */
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     /**
@@ -47,20 +61,6 @@ public class Comment {
      */
     public Integer getId() {
         return id;
-    }
-
-    /**
-     * @param heading the heading to set
-     */
-    public void setHeading(String heading) {
-        this.heading = heading;
-    }
-
-    /**
-     * @return the heading
-     */
-    public String getHeading() {
-        return heading;
     }
 
     /**

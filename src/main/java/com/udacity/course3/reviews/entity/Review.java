@@ -1,10 +1,12 @@
 package com.udacity.course3.reviews.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
 
 /**
  * Review
@@ -18,7 +20,11 @@ public class Review {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Integer id;
+        @Column(name = "title")
+        @NotEmpty(message = "Please provide a review's title")
         private String title;
+        @Column(name = "body")
+        @NotEmpty(message = "Please provide a review's body")
         private String body;
 
         public Review() { }
