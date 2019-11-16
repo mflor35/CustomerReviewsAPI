@@ -1,5 +1,6 @@
 package com.udacity.course3.reviews.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,9 @@ import com.udacity.course3.reviews.repository.ProductRepository;
 public class ProductsController {
 
     // DONE: Wire JPA repositories here
-    private final ProductRepository productRepository;
+    private ProductRepository productRepository;
     
+    @Autowired
     ProductsController(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
