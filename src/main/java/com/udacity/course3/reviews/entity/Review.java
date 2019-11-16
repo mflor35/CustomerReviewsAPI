@@ -29,8 +29,7 @@ public class Review {
 
         public Review() { }
 
-        public Review( String title, String body, Integer id) {
-            this.id = id;
+        public Review( String title, String body) {
             this.body = body;
             this.title = title;
         }

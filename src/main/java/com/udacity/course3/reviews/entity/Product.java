@@ -23,11 +23,14 @@ public class Product {
     @Column(name = "description")
     @NotEmpty(message = "Please provide a product's description")
     private String description;
+    @Column(name = "price")
+    @NotEmpty(message = "Please provide a product's price")
+    private Double price;
 
     public Product() { }
 
-    public Product(String name, String description, Integer id) {
-        this.id = id;
+    public Product(String name, String description, Double price) {
+        this.price = price;
         this.name = name;
         this.description = description;
     }
@@ -73,4 +76,17 @@ public class Product {
         this.name = name;
     }
 
+    /**
+     * @param price the price to set
+     */
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    /**
+     * @return the price
+     */
+    public Double getPrice() {
+        return price;
+    }
 }

@@ -29,10 +29,9 @@ public class Comment {
 
     public Comment() { }
 
-    public Comment(String title, String body, Integer id) {
+    public Comment(String title, String body) {
         this.title = title;
         this.body = body;
-        this.id = id;
     }
     /**
      * @param body the body to set
