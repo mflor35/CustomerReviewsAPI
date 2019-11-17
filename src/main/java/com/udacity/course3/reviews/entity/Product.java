@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -24,16 +25,21 @@ public class Product {
     @NotEmpty(message = "Please provide a product's description")
     private String description;
     @Column(name = "price")
-    @NotEmpty(message = "Please provide a product's price")
+    @NotNull(message = "Please provide a product's price")
     private Double price;
 
     public Product() { }
+
+    public Product(Integer id) {
+        this.id = id;
+    }
 
     public Product(String name, String description, Double price) {
         this.price = price;
         this.name = name;
         this.description = description;
     }
+
     /**
      * @return the id
      */

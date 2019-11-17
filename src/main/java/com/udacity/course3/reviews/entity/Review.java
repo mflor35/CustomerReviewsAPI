@@ -28,10 +28,13 @@ public class Review {
         private String body;
 
         public Review() { }
-
-        public Review( String title, String body) {
+        public Review(Integer id) {
+            this.id = id;
+        }
+        public Review( String title, String body, Integer id) {
             this.body = body;
             this.title = title;
+            this.id = id;
         }
 
         /**
