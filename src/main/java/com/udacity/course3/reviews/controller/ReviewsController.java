@@ -42,7 +42,7 @@ public class ReviewsController {
      * @return The created review or 404 if product id is not found.
      */
     @RequestMapping(value = "/reviews/products/{productId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Review> createReviewForProduct(@PathVariable("productId") Integer productId, @Valid @RequestBody Review review) {
+    public ResponseEntity<Review> createReviewForProduct(@Valid @PathVariable("productId") Integer productId, @RequestBody Review review) {
         Optional<Product> oProduct = productRepository.findById(productId);
         
         if(!oProduct.isPresent()) {
@@ -61,7 +61,7 @@ public class ReviewsController {
      * @return The list of reviews.
      */
     @RequestMapping(value = "/reviews/products/{productId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Review>> listReviewsForProduct(@PathVariable("productId") Integer productId) {
+    public ResponseEntity<List<Review>> listReviewsForProduct(@Valid @PathVariable("productId") Integer productId) {
         return ResponseEntity.ok(reviewRepository.findByProduct(new Product(productId)));
     }
 }

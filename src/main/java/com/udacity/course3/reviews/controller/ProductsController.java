@@ -47,7 +47,7 @@ public class ProductsController {
      * @return The product if found, or a 404 not found.
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Product> findById(@PathVariable("id") Integer id) {
+    public ResponseEntity<Product> findById(@Valid @PathVariable("id") Integer id) {
         return ResponseEntity.of(this.productRepository.findById(id));
     }
 

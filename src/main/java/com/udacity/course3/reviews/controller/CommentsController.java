@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import com.udacity.course3.reviews.entity.Comment;
 import com.udacity.course3.reviews.entity.Review;
 import com.udacity.course3.reviews.repository.CommentRepository;
@@ -41,7 +43,7 @@ public class CommentsController {
      * @param reviewId The id of the review.
      */
     @RequestMapping(value = "/reviews/{reviewId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Comment> createCommentForReview(@PathVariable("reviewId") Integer reviewId, @RequestBody Comment comment) {
+    public ResponseEntity<Comment> createCommentForReview(@Valid @PathVariable("reviewId") Integer reviewId, @RequestBody Comment comment) {
         Optional<Review> oReview = reviewRepository.findById(reviewId);
         if(!oReview.isPresent()) {
             return ResponseEntity.notFound().build();
@@ -61,7 +63,7 @@ public class CommentsController {
      * @param reviewId The id of the review.
      */
     @RequestMapping(value = "/reviews/{reviewId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Comment>> listCommentsForReview(@PathVariable("reviewId") Integer reviewId) {
+    public ResponseEntity<List<Comment>> listCommentsForReview(@Valid @PathVariable("reviewId") Integer reviewId) {
         return ResponseEntity.ok(commentRepository.findAllByReview(new Review(reviewId)));
     }
 }
