@@ -10,9 +10,12 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.udacity.course3.reviews.entity.MongoReview;
 import com.udacity.course3.reviews.entity.Product;
 import com.udacity.course3.reviews.entity.Review;
+import com.udacity.course3.reviews.repository.CommentMongoRepository;
 import com.udacity.course3.reviews.repository.ProductRepository;
+import com.udacity.course3.reviews.repository.ReviewMongoRepository;
 import com.udacity.course3.reviews.repository.ReviewRepository;
 
 /**
@@ -24,11 +27,14 @@ public class ReviewsController {
     // DONE: Wire JPA repositories here
     private ReviewRepository reviewRepository;
     private ProductRepository productRepository;
+    private ReviewMongoRepository reviewMongoRepo;
 
     @Autowired
-    ReviewsController(ReviewRepository reviewRepository, ProductRepository productRepository) {
+    ReviewsController(ReviewRepository reviewRepository, ProductRepository productRepository, 
+    ReviewMongoRepository reviewMongoRepository) {
         this.productRepository = productRepository;
         this.reviewRepository = reviewRepository;
+        this.reviewMongoRepo = reviewMongoRepository; 
     }
 
     /**
@@ -42,7 +48,8 @@ public class ReviewsController {
      * @return The created review or 404 if product id is not found.
      */
     @RequestMapping(value = "/reviews/products/{productId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Review> createReviewForProduct(@Valid @PathVariable("productId") Integer productId, @RequestBody Review review) {
+    public ResponseEntity<MongoReview> createReviewForProduct(@Valid @PathVariable("productId") Integer productId,
+            @RequestBody Review review) {
         Optional<Product> oProduct = productRepository.findById(productId);
         
         if(!oProduct.isPresent()) {
@@ -50,7 +57,10 @@ public class ReviewsController {
         }
         
         review.setProduct(oProduct.get());
-        return ResponseEntity.ok(reviewRepository.save(review));
+        review = reviewRepository.save(review);
+        MongoReview mongoReview = new MongoReview(review.getTitle(), review.getBody(), review.getId());
+
+        return ResponseEntity.ok(reviewMongoRepo.save(mongoReview));
 
     }
 
