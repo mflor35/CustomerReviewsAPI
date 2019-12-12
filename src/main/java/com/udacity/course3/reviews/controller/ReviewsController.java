@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +14,6 @@ import javax.validation.Valid;
 import com.udacity.course3.reviews.entity.MongoReview;
 import com.udacity.course3.reviews.entity.Product;
 import com.udacity.course3.reviews.entity.Review;
-import com.udacity.course3.reviews.repository.CommentMongoRepository;
 import com.udacity.course3.reviews.repository.ProductRepository;
 import com.udacity.course3.reviews.repository.ReviewMongoRepository;
 import com.udacity.course3.reviews.repository.ReviewRepository;
@@ -71,7 +71,16 @@ public class ReviewsController {
      * @return The list of reviews.
      */
     @RequestMapping(value = "/reviews/products/{productId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Review>> listReviewsForProduct(@Valid @PathVariable("productId") Integer productId) {
-        return ResponseEntity.ok(reviewRepository.findByProduct(new Product(productId)));
+    public ResponseEntity<List<MongoReview>> listReviewsForProduct(@Valid @PathVariable("productId") Integer productId) {
+        Product reviewedProduct = new Product(productId);
+        List<MongoReview> mongoReviews = new ArrayList<>();
+        for (Review review : reviewRepository.findByProduct(reviewedProduct)) {
+            Optional<MongoReview> oReviewMongo = reviewMongoRepo.findById(review.getId());
+            if(oReviewMongo.isPresent()) {
+                mongoReviews.add(oReviewMongo.get());
+            }
+        }
+
+        return ResponseEntity.ok(mongoReviews);
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 /**
  * ReviewMongoRepository
  */
-public interface ReviewMongoRepository extends MongoRepository<MongoReview, String>{
+public interface ReviewMongoRepository extends MongoRepository<MongoReview, Integer>{
 
     
 }
