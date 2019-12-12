@@ -1,4 +1,4 @@
-CREATE TABLE REVIEW (
+CREATE TABLE review (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
   body VARCHAR(10000) NULL,
@@ -6,14 +6,14 @@ CREATE TABLE REVIEW (
   product_id INT NOT NULL
 );
 
-CREATE TABLE PRODUCT (
+CREATE TABLE product (
   id INT AUTO_INCREMENT primary key,
   name VARCHAR(255) NOT NULL,
   price INT NOT NULL,
   description VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE COMMENT (
+CREATE TABLE comment (
   id INT AUTO_INCREMENT primary key,
   title VARCHAR(255) NOT NULL,
   body VARCHAR(10000) NULL,
@@ -22,6 +22,6 @@ CREATE TABLE COMMENT (
 );
 
 
-ALTER TABLE REVIEW ADD CONSTRAINT review_product_id_fk FOREIGN KEY (product_id) REFERENCES PRODUCT (id);
+ALTER TABLE review ADD CONSTRAINT review_product_id_fk FOREIGN KEY (product_id) REFERENCES product (id);
 
-ALTER TABLE COMMENT ADD CONSTRAINT comment_review_id_fk FOREIGN KEY (review_id) REFERENCES REVIEW (id);
+ALTER TABLE comment ADD CONSTRAINT comment_review_id_fk FOREIGN KEY (review_id) REFERENCES review (id);
