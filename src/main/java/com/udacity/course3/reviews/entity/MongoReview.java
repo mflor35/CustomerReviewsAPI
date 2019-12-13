@@ -1,5 +1,7 @@
 package com.udacity.course3.reviews.entity;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 
 /**
@@ -11,6 +13,7 @@ public class MongoReview {
     private Integer id;
     private String title;
     private String body;
+    private List<MongoComment> comments;
 
     public MongoReview() { }
 
@@ -56,6 +59,18 @@ public class MongoReview {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    /**
+     * @return the comments
+     */
+    public List<MongoComment> getComments() {
+        return comments;
+    }
+
+    public void addComment(MongoComment comment) {
+        this.comments.add(comment);
+    }
+    
     @Override
     public String toString() {
         return String.format("{id:%i, title:%s, body:%s }", id, title, body);
