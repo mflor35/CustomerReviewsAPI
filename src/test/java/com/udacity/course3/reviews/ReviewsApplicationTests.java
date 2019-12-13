@@ -1,7 +1,6 @@
 package com.udacity.course3.reviews;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.notNull;
 
 import java.util.Optional;
 
@@ -31,8 +30,8 @@ public class ReviewsApplicationTests {
     @Autowired private TestEntityManager testEntityManager;
 
     @Autowired private ReviewRepository reviewRepository;
-	@Autowired private ProductRepository productRepository;
-	@Autowired private CommentRepository commentRepository;
+	  @Autowired private ProductRepository productRepository;
+	  @Autowired private CommentRepository commentRepository;
 
 
   @Test
@@ -43,6 +42,7 @@ public class ReviewsApplicationTests {
     assertNotNull(reviewRepository);
     assertNotNull(productRepository);
     assertNotNull(commentRepository);
+
   }
 	@Test
     public void testAddingProductReviewComment() {
@@ -67,7 +67,6 @@ public class ReviewsApplicationTests {
         assertTrue(optProduct.isPresent());
         assertEquals(optProduct.get().getDescription(), product.getDescription());
         assertEquals(optProduct.get().getPrice(), product.getPrice());
-	}
-
+  }
 
 }
