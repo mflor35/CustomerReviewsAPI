@@ -14,8 +14,10 @@ import javax.validation.Valid;
 import com.udacity.course3.reviews.entity.Comment;
 import com.udacity.course3.reviews.entity.Review;
 import com.udacity.course3.reviews.entity.MongoComment;
+import com.udacity.course3.reviews.entity.MongoReview;
 import com.udacity.course3.reviews.repository.CommentMongoRepository;
 import com.udacity.course3.reviews.repository.CommentRepository;
+import com.udacity.course3.reviews.repository.ReviewMongoRepository;
 import com.udacity.course3.reviews.repository.ReviewRepository;
 
 /**
@@ -29,10 +31,13 @@ public class CommentsController {
     private ReviewRepository reviewRepository;
     private CommentRepository commentRepository;
     private CommentMongoRepository commentMongoRepo;
+    private ReviewMongoRepository reviewMongoRepo;
 
     @Autowired
-    public CommentsController(ReviewRepository reviewRepository, CommentRepository commentRepository, CommentMongoRepository commentMongoRepository) {
+    public CommentsController(ReviewRepository reviewRepository, CommentRepository commentRepository, 
+                                CommentMongoRepository commentMongoRepository, ReviewMongoRepository reviewMongoRepository) {
         this.reviewRepository = reviewRepository;
+        this.reviewMongoRepo = reviewMongoRepository;
         this.commentRepository = commentRepository;
         this.commentMongoRepo = commentMongoRepository;
     }
@@ -50,6 +55,12 @@ public class CommentsController {
     @RequestMapping(value = "/reviews/{reviewId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MongoComment> createCommentForReview(@Valid @PathVariable("reviewId") Integer reviewId, @RequestBody Comment comment) {
         Optional<Review> oReview = reviewRepository.findById(reviewId);
+        Optional<MongoReview> oMongoReview = reviewMongoRepo.findById(reviewId);
+        
+        if(!oMongoReview.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        
         if(!oReview.isPresent()) {
             return ResponseEntity.notFound().build();
         }
@@ -57,7 +68,7 @@ public class CommentsController {
         comment.setReview(oReview.get());
         comment = commentRepository.save(comment);
         MongoComment mongoComment = new MongoComment(comment.getTitle(), comment.getBody(), comment.getId());
-
+        oMongoReview.get().addComment(mongoComment);
         return ResponseEntity.ok(commentMongoRepo.save(mongoComment));
     }
 
@@ -72,15 +83,10 @@ public class CommentsController {
      */
     @RequestMapping(value = "/reviews/{reviewId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<MongoComment>> listCommentsForReview(@Valid @PathVariable("reviewId") Integer reviewId) {
-        List<MongoComment> mongoComments = new ArrayList<>();
-        Review commentedReview = new Review(reviewId);
-        for (Comment comment : commentRepository.findAllByReview(commentedReview)) {
-            Optional<MongoComment> oCommentMongo = commentMongoRepo.findById(comment.getId());
-            if (oCommentMongo.isPresent()) {
-                mongoComments.add(oCommentMongo.get());
-            }
-            
+        Optional<MongoReview> oMongoReview = reviewMongoRepo.findById(reviewId);
+        if(!oMongoReview.isPresent()) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(mongoComments);
+        return ResponseEntity.ok(oMongoReview.get().getComments());
     }
 }
